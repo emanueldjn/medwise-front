@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import axios from 'axios'
+import { toast } from 'react-toastify'
 
 const RegisterForm = () => {
     const [nome_completo, setNomeCompleto] = useState('')
@@ -38,12 +39,12 @@ const RegisterForm = () => {
                 'https://medwise-back.onrender.com/api/register',
                 { nome_completo, email, password, nDni, data_nascimento, sexo, aceita_termos }
             )
+            toast.success('Registro realizado com sucesso!')
             navigate('/login')
         } catch (err) {
-            setError(
-                err.response?.data?.error ||
-                'Erro ao registrar usuário!'
-            )
+            const msg = err.response?.data?.error || 'Erro ao registrar usuário!'
+            setError(msg)
+            toast.error(msg)
         } finally {
             setLoading(false)
         }

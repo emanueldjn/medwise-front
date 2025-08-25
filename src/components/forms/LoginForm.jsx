@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { toast } from 'react-toastify'
 
 const LoginForm = () => {
     const [email, setEmail] = useState('')
@@ -30,20 +31,21 @@ const LoginForm = () => {
         setLoading(true)
         try {
             const response = await axios.post(
-                'https://medwise-wu7i.vercel.app/api/users/login',
+                'https://medwise-back.onrender.com/api/login',
                 { email, password }
             )
-            if (response.data && response.data.user) {
-                localStorage.setItem('user', JSON.stringify(response.data.user))
+            if (response.data && response.data.token) {
+                localStorage.setItem('token', response.data.token)
+                toast.success('Login realizado com sucesso!')
                 navigate('/dashboard')
             } else {
                 setError('Resposta inválida do servidor.')
+                toast.error('Resposta inválida do servidor.')
             }
         } catch (err) {
-            setError(
-                err.response?.data?.error ||
-                'Erro ao conectar ao servidor. Tente novamente.'
-            )
+            const msg = err.response?.data?.error || 'Erro ao conectar ao servidor. Tente novamente.'
+            setError(msg)
+            toast.error(msg)
         } finally {
             setLoading(false)
         }
