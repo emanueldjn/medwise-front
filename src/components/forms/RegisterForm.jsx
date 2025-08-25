@@ -79,6 +79,17 @@ const RegisterForm = () => {
                         onChange={e => setEmail(e.target.value)}
                     />
                 </div>
+                <div className="mb-6">
+                    <label htmlFor="password" className="block text-gray-700 mb-2">Senha</label>
+                    <input
+                        type="password"
+                        id="password"
+                        className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-500"
+                        placeholder="Digite sua senha"
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                    />
+                </div>
                 <div className="mb-4">
                     <label htmlFor="nDni" className="block text-gray-700 mb-2">Número de DNI</label>
                     <input
@@ -124,17 +135,6 @@ const RegisterForm = () => {
                         />
                         <span className="text-gray-700">Aceito os termos de uso</span>
                     </label>
-                </div>
-                <div className="mb-6">
-                    <label htmlFor="password" className="block text-gray-700 mb-2">Senha</label>
-                    <input
-                        type="password"
-                        id="password"
-                        className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-500"
-                        placeholder="Digite sua senha"
-                        value={password}
-                        onChange={e => setPassword(e.target.value)}
-                    />
                 </div>
                 <button
                     type="submit"
