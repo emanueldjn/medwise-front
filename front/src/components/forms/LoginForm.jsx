@@ -19,7 +19,7 @@ const LoginForm = () => {
         setLoading(true)
         try {
             const response = await axios.post(
-                'https://medwise-api.vercel.app/api/users/login',
+                'https://medwise-wu7i.vercel.app/api/users/login',
                 { email, password }
             )
             if (response.data && response.data.user) {

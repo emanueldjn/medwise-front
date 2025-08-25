@@ -21,7 +21,7 @@ const RegisterForm = () => {
         setLoading(true)
         try {
             await axios.post(
-                'https://medwise-api.vercel.app/api/users/register',
+                'https://medwise-wu7i.vercel.app/api/users/register',
                 { nome, email, nDni, senha }
             )
             navigate('/login')
