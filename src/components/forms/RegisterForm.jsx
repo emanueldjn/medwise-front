@@ -3,10 +3,13 @@ import { useNavigate, Link } from 'react-router-dom'
 import axios from 'axios'
 
 const RegisterForm = () => {
-    const [nome, setNome] = useState('')
+    const [nome_completo, setNomeCompleto] = useState('')
     const [email, setEmail] = useState('')
     const [nDni, setNDni] = useState('')
-    const [senha, setSenha] = useState('')
+    const [password, setPassword] = useState('')
+    const [data_nascimento, setDataNascimento] = useState('')
+    const [sexo, setSexo] = useState('')
+    const [aceita_termos, setAceitaTermos] = useState(false)
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
@@ -17,23 +20,23 @@ const RegisterForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         setError('')
-        if (!nome || !email || !nDni || !senha) {
-            setError('Preencha todos os campos.')
+        if (!nome_completo || !email || !nDni || !password || !data_nascimento || !sexo || !aceita_termos) {
+            setError('Preencha todos os campos e aceite os termos.')
             return
         }
         if (!validateEmail(email)) {
             setError('Email inválido.')
             return
         }
-        if (!validateSenha(senha)) {
+        if (!validateSenha(password)) {
             setError('A senha deve ter pelo menos 6 caracteres.')
             return
         }
         setLoading(true)
         try {
             await axios.post(
-                'https://medwise-wu7i.vercel.app/api/users/register',
-                { nome, email, nDni, senha }
+                'https://medwise-back.onrender.com/api/register',
+                { nome_completo, email, password, nDni, data_nascimento, sexo, aceita_termos }
             )
             navigate('/login')
         } catch (err) {
@@ -54,14 +57,14 @@ const RegisterForm = () => {
                     <div className="mb-4 text-red-600 text-center">{error}</div>
                 )}
                 <div className="mb-4">
-                    <label htmlFor="nome" className="block text-gray-700 mb-2">Nome</label>
+                    <label htmlFor="nome_completo" className="block text-gray-700 mb-2">Nome Completo</label>
                     <input
                         type="text"
-                        id="nome"
+                        id="nome_completo"
                         className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-500"
-                        placeholder="Digite seu nome"
-                        value={nome}
-                        onChange={e => setNome(e.target.value)}
+                        placeholder="Digite seu nome completo"
+                        value={nome_completo}
+                        onChange={e => setNomeCompleto(e.target.value)}
                     />
                 </div>
                 <div className="mb-4">
@@ -86,15 +89,50 @@ const RegisterForm = () => {
                         onChange={e => setNDni(e.target.value)}
                     />
                 </div>
+                <div className="mb-4">
+                    <label htmlFor="data_nascimento" className="block text-gray-700 mb-2">Data de Nascimento</label>
+                    <input
+                        type="date"
+                        id="data_nascimento"
+                        className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-500"
+                        value={data_nascimento}
+                        onChange={e => setDataNascimento(e.target.value)}
+                    />
+                </div>
+                <div className="mb-4">
+                    <label htmlFor="sexo" className="block text-gray-700 mb-2">Sexo</label>
+                    <select
+                        id="sexo"
+                        className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-500"
+                        value={sexo}
+                        onChange={e => setSexo(e.target.value)}
+                    >
+                        <option value="">Selecione</option>
+                        <option value="masculino">Masculino</option>
+                        <option value="feminino">Feminino</option>
+                        <option value="outro">Outro</option>
+                    </select>
+                </div>
+                <div className="mb-4">
+                    <label className="flex items-center">
+                        <input
+                            type="checkbox"
+                            checked={aceita_termos}
+                            onChange={e => setAceitaTermos(e.target.checked)}
+                            className="mr-2"
+                        />
+                        <span className="text-gray-700">Aceito os termos de uso</span>
+                    </label>
+                </div>
                 <div className="mb-6">
-                    <label htmlFor="senha" className="block text-gray-700 mb-2">Senha</label>
+                    <label htmlFor="password" className="block text-gray-700 mb-2">Senha</label>
                     <input
                         type="password"
-                        id="senha"
+                        id="password"
                         className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-500"
                         placeholder="Digite sua senha"
-                        value={senha}
-                        onChange={e => setSenha(e.target.value)}
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
                     />
                 </div>
                 <button
