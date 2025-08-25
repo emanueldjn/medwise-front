@@ -1,23 +1,47 @@
 import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import axios from 'axios'
 
 const RegisterForm = () => {
     const [nome, setNome] = useState('')
     const [email, setEmail] = useState('')
     const [nDni, setNDni] = useState('')
     const [senha, setSenha] = useState('')
+    const [error, setError] = useState('')
+    const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        // Aqui você pode adicionar lógica de registro (API, validação, etc)
-        navigate('/login')
+        setError('')
+        if (!nome || !email || !nDni || !senha) {
+            setError('Preencha todos os campos.')
+            return
+        }
+        setLoading(true)
+        try {
+            await axios.post(
+                'https://medwise-api.vercel.app/api/users/register',
+                { nome, email, nDni, senha }
+            )
+            navigate('/login')
+        } catch (err) {
+            setError(
+                err.response?.data?.error ||
+                'Erro ao registrar usuário!'
+            )
+        } finally {
+            setLoading(false)
+        }
     }
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
             <form className="max-w-sm w-full p-6 bg-white rounded shadow" onSubmit={handleSubmit}>
                 <h2 className="text-2xl font-bold mb-6 text-center">Registrar Usuário</h2>
+                {error && (
+                    <div className="mb-4 text-red-600 text-center">{error}</div>
+                )}
                 <div className="mb-4">
                     <label htmlFor="nome" className="block text-gray-700 mb-2">Nome</label>
                     <input
@@ -65,14 +89,15 @@ const RegisterForm = () => {
                 <button
                     type="submit"
                     className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
+                    disabled={loading}
                 >
-                    Registrar
+                    {loading ? 'Registrando...' : 'Registrar'}
                 </button>
-                {/* <div className="mt-4 text-center">
+                <div className="mt-4 text-center">
                     <Link to="/login" className="text-blue-600 hover:underline">
                         Voltar para Login
                     </Link>
-                </div> */}
+                </div>
             </form>
         </div>
     )

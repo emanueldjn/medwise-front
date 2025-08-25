@@ -10,7 +10,7 @@ exports.register = async (req, res) => {
     const user = await prisma.user.create({
       data: { nome, email, nDni, senha }
     })
-    res.status(201).json({ user })
+    res.status(201).json({ user: { id: user.id, nome: user.nome, email: user.email, nDni: user.nDni } })
   } catch (err) {
     res.status(500).json({ error: 'Erro ao cadastrar usuário' })
   }
@@ -23,8 +23,9 @@ exports.login = async (req, res) => {
     if (!user || user.senha !== password) {
       return res.status(401).json({ error: 'Email ou senha inválidos!' })
     }
-    // Aqui você pode retornar dados do usuário ou um token JWT futuramente
-    res.status(200).json({ message: 'Login realizado com sucesso', user: { id: user.id, nome: user.nome, email: user.email, nDni: user.nDni } })
+    res.status(200).json({
+      user: { id: user.id, nome: user.nome, email: user.email, nDni: user.nDni }
+    })
   } catch (err) {
     res.status(500).json({ error: 'Erro ao realizar login' })
   }
