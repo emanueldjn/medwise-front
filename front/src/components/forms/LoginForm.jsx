@@ -9,11 +9,22 @@ const LoginForm = () => {
     const [error, setError] = useState('')
     const navigate = useNavigate()
 
+    const validateEmail = (email) => /\S+@\S+\.\S+/.test(email)
+    const validateSenha = (senha) => senha.length >= 6
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         setError('')
         if (!email || !password) {
             setError('Preencha todos os campos.')
+            return
+        }
+        if (!validateEmail(email)) {
+            setError('Email inválido.')
+            return
+        }
+        if (!validateSenha(password)) {
+            setError('A senha deve ter pelo menos 6 caracteres.')
             return
         }
         setLoading(true)

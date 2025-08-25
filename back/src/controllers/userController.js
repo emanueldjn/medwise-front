@@ -12,6 +12,7 @@ exports.register = async (req, res) => {
     })
     res.status(201).json({ user: { id: user.id, nome: user.nome, email: user.email, nDni: user.nDni } })
   } catch (err) {
+    console.error('Erro ao cadastrar usuário:', err)
     res.status(500).json({ error: 'Erro ao cadastrar usuário' })
   }
 }
@@ -27,6 +28,7 @@ exports.login = async (req, res) => {
       user: { id: user.id, nome: user.nome, email: user.email, nDni: user.nDni }
     })
   } catch (err) {
+    console.error('Erro ao realizar login:', err)
     res.status(500).json({ error: 'Erro ao realizar login' })
   }
 }

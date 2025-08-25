@@ -11,11 +11,22 @@ const RegisterForm = () => {
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
 
+    const validateEmail = (email) => /\S+@\S+\.\S+/.test(email)
+    const validateSenha = (senha) => senha.length >= 6
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         setError('')
         if (!nome || !email || !nDni || !senha) {
             setError('Preencha todos os campos.')
+            return
+        }
+        if (!validateEmail(email)) {
+            setError('Email inválido.')
+            return
+        }
+        if (!validateSenha(senha)) {
+            setError('A senha deve ter pelo menos 6 caracteres.')
             return
         }
         setLoading(true)
@@ -65,10 +76,10 @@ const RegisterForm = () => {
                     />
                 </div>
                 <div className="mb-4">
-                    <label htmlFor="ndni" className="block text-gray-700 mb-2">Número de DNI</label>
+                    <label htmlFor="nDni" className="block text-gray-700 mb-2">Número de DNI</label>
                     <input
                         type="text"
-                        id="ndni"
+                        id="nDni"
                         className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-500"
                         placeholder="Digite seu DNI"
                         value={nDni}
