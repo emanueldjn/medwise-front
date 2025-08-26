@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { X, Eye, EyeOff } from "lucide-react"
 import axios from "axios"
 import { toast } from "react-toastify"
@@ -12,6 +13,8 @@ const LoginModal = ({ isOpen, onClose, onSwitchToRegister }) => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
 
+
+  const navigate = useNavigate();
   if (!isOpen) return null
 
   const validateEmail = (email) => /\S+@\S+\.\S+/.test(email)
@@ -51,8 +54,8 @@ const LoginModal = ({ isOpen, onClose, onSwitchToRegister }) => {
         localStorage.setItem("user", JSON.stringify(userObj))
         toast.success("Login realizado com sucesso!")
         onClose()
-        // Redirect to dashboard
-        window.location.href = "/dashboard"
+        // Redireciona usando React Router
+        navigate("/dashboard")
       } else {
         console.error("Resposta do servidor:", response.data)
         const msg = response.data?.error || "Resposta inválida do servidor."
