@@ -33,7 +33,7 @@ const Configuracoes = () => {
   const uploadFoto = async (file) => {
     const formData = new FormData();
     formData.append('file', file);
-    const res = await axios.post('/api/upload', formData);
+    const res = await axios.post('https://medwise-back.onrender.com/api/upload', formData);
     return res.data.url;
   };
 
