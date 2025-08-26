@@ -3,10 +3,13 @@
 import { Bar, Pie } from "react-chartjs-2"
 import { Chart, CategoryScale, LinearScale, BarElement, ArcElement, Tooltip, Legend } from "chart.js"
 import { Link } from "react-router-dom"
+import { useState } from "react"
 
 Chart.register(CategoryScale, LinearScale, BarElement, ArcElement, Tooltip, Legend)
 
 const Dashboard = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+
   let nomeUsuario = ""
   let emailUsuario = ""
   try {
@@ -23,12 +26,28 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen flex bg-background">
-      {/* Modern Sidebar */}
-      <aside className="w-80 bg-sidebar border-r border-sidebar-border flex flex-col shadow-2xl">
+      {sidebarOpen && (
+        <div className="fixed inset-0 bg-black/50 z-40 md:hidden" onClick={() => setSidebarOpen(false)} />
+      )}
+
+      <aside
+        className={`fixed md:relative w-80 bg-sidebar border-r border-sidebar-border flex flex-col shadow-2xl z-50 transition-transform duration-300 ${
+          sidebarOpen ? "mobile-sidebar-visible" : "mobile-sidebar-hidden md:translate-x-0"
+        }`}
+      >
         {/* Header with modern gradient */}
         <div className="bg-gradient-to-br from-primary via-primary to-secondary p-8 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
           <div className="relative z-10">
+            <button
+              onClick={() => setSidebarOpen(false)}
+              className="md:hidden absolute top-4 right-4 p-2 text-white/80 hover:text-white"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
             <div className="flex flex-col items-center text-center">
               {/* Enhanced avatar */}
               <div className="relative mb-6">
@@ -55,6 +74,7 @@ const Dashboard = () => {
           <div className="space-y-2">
             <Link
               to="/dashboard"
+              onClick={() => setSidebarOpen(false)}
               className="flex items-center gap-4 px-4 py-4 rounded-xl text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-all duration-300 group relative overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -85,6 +105,7 @@ const Dashboard = () => {
 
             <Link
               to="/meus-estudos"
+              onClick={() => setSidebarOpen(false)}
               className="flex items-center gap-4 px-4 py-4 rounded-xl text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-all duration-300 group relative overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-secondary/5 to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -108,7 +129,33 @@ const Dashboard = () => {
             </Link>
 
             <Link
+              to="/questoes"
+              onClick={() => setSidebarOpen(false)}
+              className="flex items-center gap-4 px-4 py-4 rounded-xl text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-all duration-300 group relative overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-chart-3/5 to-chart-4/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="w-12 h-12 rounded-xl bg-chart-3/10 group-hover:bg-chart-3 group-hover:text-white flex items-center justify-center transition-all duration-300 relative z-10">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+              <div className="flex-1 relative z-10">
+                <span className="font-semibold text-base">Questões</span>
+                <p className="text-xs text-muted-foreground group-hover:text-sidebar-accent-foreground/80">
+                  Simulados e exercícios
+                </p>
+              </div>
+              <div className="w-2 h-2 rounded-full bg-chart-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 relative z-10"></div>
+            </Link>
+
+            <Link
               to="/configuracoes"
+              onClick={() => setSidebarOpen(false)}
               className="flex items-center gap-4 px-4 py-4 rounded-xl text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-all duration-300 group relative overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-chart-5/5 to-chart-4/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -196,21 +243,28 @@ const Dashboard = () => {
         </div>
       </aside>
 
-      {/* Main Content */}
-      <main className="flex-1 p-8 overflow-auto">
+      <main className="flex-1 p-4 md:p-8 overflow-auto">
+        <div className="md:hidden mb-6">
+          <button onClick={() => setSidebarOpen(true)} className="p-2 bg-primary text-white rounded-lg shadow-lg">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+
         {/* Welcome Header */}
         <div className="mb-8 animate-fade-in">
-          <div className="bg-gradient-to-r from-card via-card to-card/80 rounded-2xl shadow-xl border border-border p-8 relative overflow-hidden">
+          <div className="bg-gradient-to-r from-card via-card to-card/80 rounded-2xl shadow-xl border border-border p-6 md:p-8 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5"></div>
             <div className="relative z-10 flex flex-col md:flex-row items-center gap-6">
-              <div className="flex-1">
-                <h1 className="text-4xl font-bold text-foreground mb-3 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              <div className="flex-1 text-center md:text-left">
+                <h1 className="text-2xl md:text-4xl font-bold text-foreground mb-3 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                   Bem-vindo{nomeUsuario ? `, ${nomeUsuario.split(" ")[0]}` : ""}! 👋
                 </h1>
-                <p className="text-muted-foreground text-lg">
+                <p className="text-muted-foreground text-base md:text-lg">
                   Aqui está o seu painel de estudos e estatísticas médicas.
                 </p>
-                <div className="flex items-center gap-4 mt-4">
+                <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">
                   <div className="flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full">
                     <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
                     <span className="text-sm font-medium text-primary">Sistema Online</span>
@@ -221,11 +275,11 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="flex-shrink-0">
-                <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-3xl font-bold text-white shadow-2xl">
+                <div className="w-16 md:w-20 h-16 md:h-20 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-2xl md:text-3xl font-bold text-white shadow-2xl">
                   {nomeUsuario ? (
                     nomeUsuario[0].toUpperCase()
                   ) : (
-                    <svg className="w-10 h-10" fill="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-8 md:w-10 h-8 md:h-10" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
                     </svg>
                   )}
@@ -236,8 +290,8 @@ const Dashboard = () => {
         </div>
 
         {/* Charts Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-slide-in">
-          <div className="bg-card rounded-2xl shadow-xl border border-border p-8 hover:shadow-2xl transition-shadow duration-300">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 animate-slide-in">
+          <div className="bg-card rounded-2xl shadow-xl border border-border p-6 md:p-8 hover:shadow-2xl transition-shadow duration-300">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 rounded-xl bg-chart-1/10 flex items-center justify-center">
                 <svg className="w-5 h-5 text-chart-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -249,7 +303,7 @@ const Dashboard = () => {
                   />
                 </svg>
               </div>
-              <h2 className="text-2xl font-bold text-card-foreground">Progresso Mensal</h2>
+              <h2 className="text-xl md:text-2xl font-bold text-card-foreground">Progresso Mensal</h2>
             </div>
             <Bar
               data={{
@@ -258,11 +312,11 @@ const Dashboard = () => {
                   {
                     label: "Horas de Estudo",
                     data: [30, 45, 35, 50],
-                    backgroundColor: "rgba(5, 150, 105, 0.8)",
-                    borderColor: "rgba(5, 150, 105, 1)",
+                    backgroundColor: "rgba(59, 130, 246, 0.8)",
+                    borderColor: "rgba(59, 130, 246, 1)",
                     borderRadius: 8,
                     borderWidth: 2,
-                    hoverBackgroundColor: "rgba(16, 185, 129, 0.9)",
+                    hoverBackgroundColor: "rgba(96, 165, 250, 0.9)",
                   },
                 ],
               }}
@@ -305,7 +359,7 @@ const Dashboard = () => {
             />
           </div>
 
-          <div className="bg-card rounded-2xl shadow-xl border border-border p-8 hover:shadow-2xl transition-shadow duration-300">
+          <div className="bg-card rounded-2xl shadow-xl border border-border p-6 md:p-8 hover:shadow-2xl transition-shadow duration-300">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 rounded-xl bg-chart-2/10 flex items-center justify-center">
                 <svg className="w-5 h-5 text-chart-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -323,7 +377,7 @@ const Dashboard = () => {
                   />
                 </svg>
               </div>
-              <h2 className="text-2xl font-bold text-card-foreground">Distribuição de Matérias</h2>
+              <h2 className="text-xl md:text-2xl font-bold text-card-foreground">Distribuição de Matérias</h2>
             </div>
             <Pie
               data={{
@@ -332,8 +386,8 @@ const Dashboard = () => {
                   {
                     label: "Horas",
                     data: [40, 30, 30],
-                    backgroundColor: ["rgba(5, 150, 105, 0.8)", "rgba(16, 185, 129, 0.8)", "rgba(59, 130, 246, 0.8)"],
-                    borderColor: ["rgba(5, 150, 105, 1)", "rgba(16, 185, 129, 1)", "rgba(59, 130, 246, 1)"],
+                    backgroundColor: ["rgba(59, 130, 246, 0.8)", "rgba(96, 165, 250, 0.8)", "rgba(6, 182, 212, 0.8)"],
+                    borderColor: ["rgba(59, 130, 246, 1)", "rgba(96, 165, 250, 1)", "rgba(6, 182, 212, 1)"],
                     borderWidth: 3,
                     hoverOffset: 15,
                   },

@@ -4,6 +4,7 @@ import RegisterForm from "./components/forms/RegisterForm"
 import Dashboard from "./components/Dashboard/Dashboard"
 import MeusEstudos from "./pages/MeusEstudos"
 import Configuracoes from "./pages/Configuracoes"
+import Questoes from "./pages/Questoes"
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/meus-estudos" element={<MeusEstudos />} />
         <Route path="/configuracoes" element={<Configuracoes />} />
+        <Route path="/questoes" element={<Questoes />} />
       </Routes>
       <ToastContainer
         position="top-right"

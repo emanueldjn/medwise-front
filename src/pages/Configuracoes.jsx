@@ -7,31 +7,28 @@ import { Link } from "react-router-dom"
 // import axios from "axios"
 
 const Configuracoes = () => {
-  const [notificacoes, setNotificacoes] = useState(true);
-  const [tema, setTema] = useState("claro");
-  const [idioma, setIdioma] = useState("pt-BR");
-  const [nomeCompleto, setNomeCompleto] = useState("");
-  const [email, setEmail] = useState("");
+  const [notificacoes, setNotificacoes] = useState(true)
+  const [tema, setTema] = useState("claro")
+  const [idioma, setIdioma] = useState("pt-BR")
+  const [nomeCompleto, setNomeCompleto] = useState("")
+  const [email, setEmail] = useState("")
   // const [biografia, setBiografia] = useState("");
-  const [ndni, setNDni] = useState("");
-  const [dataNascimento, setDataNascimento] = useState("");
-  const [sexo, setSexo] = useState("");
+  const [ndni, setNDni] = useState("")
+  const [dataNascimento, setDataNascimento] = useState("")
+  const [sexo, setSexo] = useState("")
   // ...removido upload de foto...
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem("user"))
     if (user) {
-      setNomeCompleto(user.nome_completo || "");
-      setEmail(user.email || "");
-      setNDni(user.ndni || "");
-      setDataNascimento(user.data_nascimento || "");
-      setSexo(user.sexo || "");
-  // setBiografia(user.biografia || "");
+      setNomeCompleto(user.nome_completo || "")
+      setEmail(user.email || "")
+      setNDni(user.ndni || "")
+      setDataNascimento(user.data_nascimento || "")
+      setSexo(user.sexo || "")
+      // setBiografia(user.biografia || "");
     }
-  }, []);
-
-
-
+  }, [])
 
   // const handleSalvar = async (e) => {
   //   e.preventDefault();
@@ -119,7 +116,7 @@ const Configuracoes = () => {
                   <input
                     type="email"
                     value={email}
-                    onChange={e => setEmail(e.target.value)}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-colors"
                     placeholder="seu@email.com"
                   />
@@ -135,23 +132,29 @@ const Configuracoes = () => {
                   <div className="w-full px-4 py-3 bg-input border border-border rounded-lg">
                     {dataNascimento
                       ? (() => {
-                          const d = new Date(dataNascimento);
+                          const d = new Date(dataNascimento)
                           if (!isNaN(d)) {
-                            const dia = String(d.getDate()).padStart(2, '0');
-                            const mes = String(d.getMonth() + 1).padStart(2, '0');
-                            const ano = d.getFullYear();
-                            return `${dia}/${mes}/${ano}`;
+                            const dia = String(d.getDate()).padStart(2, "0")
+                            const mes = String(d.getMonth() + 1).padStart(2, "0")
+                            const ano = d.getFullYear()
+                            return `${dia}/${mes}/${ano}`
                           }
-                          return dataNascimento;
+                          return dataNascimento
                         })()
-                      : ''}
+                      : ""}
                   </div>
                 </div>
               </div>
               <div className="mt-6">
                 <label className="block text-sm font-medium text-card-foreground mb-2">Sexo</label>
                 <div className="w-full px-4 py-3 bg-input border border-border rounded-lg">
-                  {sexo === 'masculino' ? 'Masculino' : sexo === 'feminino' ? 'Feminino' : sexo === 'outro' ? 'Outro' : sexo || 'Não informado'}
+                  {sexo === "masculino"
+                    ? "Masculino"
+                    : sexo === "feminino"
+                      ? "Feminino"
+                      : sexo === "outro"
+                        ? "Outro"
+                        : sexo || "Não informado"}
                 </div>
               </div>
               {/* <div>
@@ -216,12 +219,14 @@ const Configuracoes = () => {
                 </div>
                 <button
                   onClick={() => setNotificacoes(!notificacoes)}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${notificacoes ? "bg-primary" : "bg-border"
-                    }`}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                    notificacoes ? "bg-primary" : "bg-border"
+                  }`}
                 >
                   <span
-                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${notificacoes ? "translate-x-6" : "translate-x-1"
-                      }`}
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                      notificacoes ? "translate-x-6" : "translate-x-1"
+                    }`}
                   />
                 </button>
               </div>
@@ -247,15 +252,17 @@ const Configuracoes = () => {
                 <div className="grid grid-cols-2 gap-3">
                   <button
                     onClick={() => setTema("claro")}
-                    className={`p-3 rounded-lg border-2 transition-colors ${tema === "claro" ? "border-primary bg-primary/10" : "border-border bg-background"
-                      }`}
+                    className={`p-3 rounded-lg border-2 transition-colors ${
+                      tema === "claro" ? "border-primary bg-primary/10" : "border-border bg-background"
+                    }`}
                   >
                     <div className="text-sm font-medium">Claro</div>
                   </button>
                   <button
                     onClick={() => setTema("escuro")}
-                    className={`p-3 rounded-lg border-2 transition-colors ${tema === "escuro" ? "border-primary bg-primary/10" : "border-border bg-background"
-                      }`}
+                    className={`p-3 rounded-lg border-2 transition-colors ${
+                      tema === "escuro" ? "border-primary bg-primary/10" : "border-border bg-background"
+                    }`}
                   >
                     <div className="text-sm font-medium">Escuro</div>
                   </button>

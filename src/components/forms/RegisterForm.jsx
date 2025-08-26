@@ -34,7 +34,15 @@ const RegisterForm = () => {
     e.preventDefault()
     setError("")
 
-    if (!formData.nome_completo || !formData.email || !formData.password || !formData.confirmPassword || !formData.ndni || !formData.data_nascimento || !formData.sexo) {
+    if (
+      !formData.nome_completo ||
+      !formData.email ||
+      !formData.password ||
+      !formData.confirmPassword ||
+      !formData.ndni ||
+      !formData.data_nascimento ||
+      !formData.sexo
+    ) {
       setError("Preencha todos os campos.")
       return
     }
@@ -72,18 +80,21 @@ const RegisterForm = () => {
 
       if (response.data?.user || response.data?.message) {
         if (response.data?.user) {
-          localStorage.setItem("user", JSON.stringify({
-            id: response.data.user.id,
-            nome_completo: response.data.user.nome_completo,
-            email: response.data.user.email,
-            ndni: response.data.user.ndni,
-            data_nascimento: response.data.user.data_nascimento,
-            sexo: response.data.user.sexo,
-            aceita_termos: response.data.user.aceita_termos
-          }));
+          localStorage.setItem(
+            "user",
+            JSON.stringify({
+              id: response.data.user.id,
+              nome_completo: response.data.user.nome_completo,
+              email: response.data.user.email,
+              ndni: response.data.user.ndni,
+              data_nascimento: response.data.user.data_nascimento,
+              sexo: response.data.user.sexo,
+              aceita_termos: response.data.user.aceita_termos,
+            }),
+          )
         }
-        toast.success("Conta criada com sucesso!");
-        navigate("/login");
+        toast.success("Conta criada com sucesso!")
+        navigate("/login")
       }
     } catch (err) {
       console.error("Erro no registro:", err)
@@ -243,11 +254,14 @@ const RegisterForm = () => {
                 id="aceita_termos"
                 name="aceita_termos"
                 checked={formData.aceita_termos}
-                onChange={e => setFormData({ ...formData, aceita_termos: e.target.checked })}
+                onChange={(e) => setFormData({ ...formData, aceita_termos: e.target.checked })}
                 className="mr-2"
               />
               <label htmlFor="aceita_termos" className="text-sm text-card-foreground">
-                Eu aceito os <a href="#" className="text-primary underline">termos de uso</a>
+                Eu aceito os{" "}
+                <a href="#" className="text-primary underline">
+                  termos de uso
+                </a>
               </label>
             </div>
             <button
