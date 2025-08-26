@@ -27,6 +27,8 @@ const App = () => {
         pauseOnFocusLoss
         draggable
         pauseOnHover
+        theme="light"
+        toastClassName="rounded-lg shadow-xl"
       />
     </BrowserRouter>
   )
