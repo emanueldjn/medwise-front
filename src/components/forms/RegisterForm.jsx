@@ -70,12 +70,19 @@ const RegisterForm = () => {
         aceita_termos: formData.aceita_termos,
       })
 
-      if (response.data?.user) {
-        localStorage.setItem("user", JSON.stringify(response.data.user));
+      if (response.data?.user || response.data?.message) {
+        if (response.data?.user) {
+          localStorage.setItem("user", JSON.stringify({
+            id: response.data.user.id,
+            nome_completo: response.data.user.nome_completo,
+            email: response.data.user.email,
+            ndni: response.data.user.ndni,
+            data_nascimento: response.data.user.data_nascimento,
+            sexo: response.data.user.sexo,
+            aceita_termos: response.data.user.aceita_termos
+          }));
+        }
         toast.success("Conta criada com sucesso!");
-        navigate("/configuracoes");
-      } else if (response.data?.message) {
-        toast.success(response.data.message);
         navigate("/login");
       }
     } catch (err) {

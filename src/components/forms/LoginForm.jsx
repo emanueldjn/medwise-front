@@ -33,17 +33,21 @@ const LoginForm = () => {
     setLoading(true)
     try {
       const response = await axios.post("https://medwise-back.onrender.com/api/login", { email, password })
-      if (response.data && response.data.token) {
-        localStorage.setItem(
-          "user",
-          JSON.stringify({
+        if (response.data?.token) {
+          // Se o backend retorna o id fora do objeto user, inclua manualmente
+          const userObj = {
+            id: response.data.id,
             nome_completo: response.data.nome_completo,
+            email: response.data.email,
+            ndni: response.data.ndni,
+            data_nascimento: response.data.data_nascimento,
+            sexo: response.data.sexo,
+            aceita_termos: response.data.aceita_termos,
             token: response.data.token,
-            email: email,
-          }),
-        )
-        toast.success("Login realizado com sucesso!")
-        navigate("/dashboard")
+          };
+          localStorage.setItem("user", JSON.stringify(userObj));
+          toast.success("Login realizado com sucesso!");
+          navigate("/dashboard");
       } else {
         console.error("Resposta do servidor:", response.data)
         const msg = response.data?.error || "Resposta inválida do servidor."

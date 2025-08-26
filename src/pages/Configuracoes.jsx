@@ -3,8 +3,8 @@
 import { useState } from "react"
 import { useEffect } from "react"
 import { Link } from "react-router-dom"
-import { toast } from "react-toastify"
-import axios from "axios"
+// import { toast } from "react-toastify"
+// import axios from "axios"
 
 const Configuracoes = () => {
   const [notificacoes, setNotificacoes] = useState(true);
@@ -12,7 +12,7 @@ const Configuracoes = () => {
   const [idioma, setIdioma] = useState("pt-BR");
   const [nomeCompleto, setNomeCompleto] = useState("");
   const [email, setEmail] = useState("");
-  const [biografia, setBiografia] = useState("");
+  // const [biografia, setBiografia] = useState("");
   const [ndni, setNDni] = useState("");
   const [dataNascimento, setDataNascimento] = useState("");
   const [sexo, setSexo] = useState("");
@@ -26,40 +26,50 @@ const Configuracoes = () => {
       setNDni(user.ndni || "");
       setDataNascimento(user.data_nascimento || "");
       setSexo(user.sexo || "");
+  // setBiografia(user.biografia || "");
     }
   }, []);
 
 
 
 
-  const handleSalvar = async (e) => {
-    e.preventDefault();
-
-    // Recupera o id do usuário do localStorage
-    const user = JSON.parse(localStorage.getItem('user'));
-    const userId = user?.id;
-
-    if (!userId) {
-      toast.error('ID do usuário não encontrado. Faça login novamente.');
-      return;
-    }
-
-    const perfil = {
-      nome_completo: nomeCompleto,
-      email,
-      biografia,
-      ndni,
-      data_nascimento: dataNascimento,
-      sexo,
-    };
-
-    try {
-      await axios.put(`https://medwise-back.onrender.com/api/user/${userId}`, perfil);
-      toast.success('Dados salvos com sucesso!');
-    } catch {
-      toast.error('Erro ao salvar dados.');
-    }
-  };
+  // const handleSalvar = async (e) => {
+  //   e.preventDefault();
+  //   // Recupera o id do usuário do localStorage, tentando de diferentes formas
+  //   let userId = null;
+  //   let user = null;
+  //   const userRaw = localStorage.getItem('user');
+  //   if (userRaw) {
+  //     try {
+  //       user = JSON.parse(userRaw);
+  //       userId = user?.id || user?.userId;
+  //     } catch {
+  //       userId = null;
+  //     }
+  //   }
+  //   if (!userId) {
+  //     toast.error('ID do usuário não encontrado. Faça login novamente.');
+  //     return;
+  //   }
+  //   // Só envia se email ou biografia estiver preenchido e diferente do valor atual
+  //   const emailChanged = email && email !== (user?.email || "");
+  //   const bioChanged = biografia && biografia !== (user?.biografia || "");
+  //   if (!emailChanged && !bioChanged) {
+  //     toast.error('Preencha ao menos um campo para atualizar.');
+  //     return;
+  //   }
+  //   // O backend pode exigir todos os campos obrigatórios, não apenas os alterados
+  //   const payload = {
+  //     email: emailChanged ? email : user.email,
+  //     biografia: bioChanged ? biografia : user.biografia || ""
+  //   };
+  //   try {
+  //     await axios.put(`https://medwise-back.onrender.com/api/user/${userId}`, payload);
+  //     toast.success('Dados salvos com sucesso!');
+  //   } catch {
+  //     toast.error('Erro ao salvar dados.');
+  //   }
+  // };
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -95,20 +105,14 @@ const Configuracoes = () => {
                 </div>
                 Perfil do Usuário
               </h2>
-              <p className="text-muted-foreground mt-1">Gerencie suas informações pessoais</p>
+              <p className="text-muted-foreground mt-1">Seus dados cadastrados</p>
             </div>
 
             <div className="p-6 space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-card-foreground mb-2">Nome Completo</label>
-                  <input
-                    type="text"
-                    value={nomeCompleto}
-                    onChange={e => setNomeCompleto(e.target.value)}
-                    className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-colors"
-                    placeholder="Seu nome completo"
-                  />
+                  <div className="w-full px-4 py-3 bg-input border border-border rounded-lg">{nomeCompleto}</div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-card-foreground mb-2">Email</label>
@@ -124,40 +128,33 @@ const Configuracoes = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
                 <div>
                   <label className="block text-sm font-medium text-card-foreground mb-2">DNI</label>
-                  <input
-                    type="text"
-                    value={ndni}
-                    onChange={e => setNDni(e.target.value)}
-                    className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-colors"
-                    placeholder="Seu DNI"
-                  />
+                  <div className="w-full px-4 py-3 bg-input border border-border rounded-lg">{ndni}</div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-card-foreground mb-2">Data de Nascimento</label>
-                  <input
-                    type="date"
-                    value={dataNascimento}
-                    onChange={e => setDataNascimento(e.target.value)}
-                    className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-colors"
-                  />
+                  <div className="w-full px-4 py-3 bg-input border border-border rounded-lg">
+                    {dataNascimento
+                      ? (() => {
+                          const d = new Date(dataNascimento);
+                          if (!isNaN(d)) {
+                            const dia = String(d.getDate()).padStart(2, '0');
+                            const mes = String(d.getMonth() + 1).padStart(2, '0');
+                            const ano = d.getFullYear();
+                            return `${dia}/${mes}/${ano}`;
+                          }
+                          return dataNascimento;
+                        })()
+                      : ''}
+                  </div>
                 </div>
               </div>
               <div className="mt-6">
                 <label className="block text-sm font-medium text-card-foreground mb-2">Sexo</label>
-                <select
-                  value={sexo}
-                  onChange={e => setSexo(e.target.value)}
-                  className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-colors"
-                >
-                  <option value="">Selecione</option>
-                  <option value="masculino">Masculino</option>
-                  <option value="feminino">Feminino</option>
-                  <option value="outro">Outro</option>
-                </select>
+                <div className="w-full px-4 py-3 bg-input border border-border rounded-lg">
+                  {sexo === 'masculino' ? 'Masculino' : sexo === 'feminino' ? 'Feminino' : sexo === 'outro' ? 'Outro' : sexo || 'Não informado'}
+                </div>
               </div>
-              {/* upload de foto removido */}
-
-              <div>
+              {/* <div>
                 <label className="block text-sm font-medium text-card-foreground mb-2">Biografia</label>
                 <textarea
                   rows={4}
@@ -166,11 +163,10 @@ const Configuracoes = () => {
                   className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-colors resize-none"
                   placeholder="Conte um pouco sobre você..."
                 ></textarea>
-              </div>
-
-              <button onClick={handleSalvar} className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 px-6 rounded-lg transition-colors duration-200">
+              </div> */}
+              {/* <button className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 px-6 rounded-lg transition-colors duration-200 mt-4">
                 Salvar Alterações
-              </button>
+              </button> */}
             </div>
           </div>
 
