@@ -25,7 +25,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen flex bg-background">
+  <div className="min-h-screen flex bg-background">
       {sidebarOpen && (
         <div className="fixed inset-0 bg-black/50 z-40 md:hidden" onClick={() => setSidebarOpen(false)} />
       )}
@@ -33,45 +33,44 @@ const Dashboard = () => {
       <aside
         className={`fixed md:relative w-80 bg-sidebar border-r border-sidebar-border flex flex-col shadow-2xl z-50 transition-transform duration-300 ${
           sidebarOpen ? "mobile-sidebar-visible" : "mobile-sidebar-hidden md:translate-x-0"
-        }`}
+        }`} style={{ height: '100vh' }}
       >
-        {/* Header with modern gradient */}
-        <div className="bg-gradient-to-br from-primary via-primary to-secondary p-8 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
-          <div className="relative z-10">
-            <button
-              onClick={() => setSidebarOpen(false)}
-              className="md:hidden absolute top-4 right-4 p-2 text-white/80 hover:text-white"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-
-            <div className="flex flex-col items-center text-center">
-              {/* Enhanced avatar */}
-              <div className="relative mb-6">
-                <div className="w-20 h-20 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center text-2xl font-bold text-white shadow-2xl ring-4 ring-white/30">
-                  {nomeUsuario ? (
-                    nomeUsuario[0].toUpperCase()
-                  ) : (
-                    <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                    </svg>
-                  )}
+  <div className="flex flex-col h-full overflow-y-auto">
+          {/* Header with modern gradient */}
+          <div className="bg-gradient-to-br from-primary via-primary to-secondary p-8 relative overflow-hidden shrink-0">
+            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
+            <div className="relative z-10">
+              <button
+                onClick={() => setSidebarOpen(false)}
+                className="md:hidden absolute top-4 right-4 p-2 text-white/80 hover:text-white"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+              <div className="flex flex-col items-center text-center">
+                {/* Enhanced avatar */}
+                <div className="relative mb-6">
+                  <div className="w-20 h-20 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center text-2xl font-bold text-white shadow-2xl ring-4 ring-white/30">
+                    {nomeUsuario ? (
+                      nomeUsuario[0].toUpperCase()
+                    ) : (
+                      <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                      </svg>
+                    )}
+                  </div>
+                  <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-400 rounded-full border-3 border-white shadow-lg"></div>
                 </div>
-                <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-400 rounded-full border-3 border-white shadow-lg"></div>
+                <h3 className="text-xl font-bold text-white mb-1">{nomeUsuario || "Usuário"}</h3>
+                <p className="text-white/80 text-sm">{emailUsuario}</p>
+                <div className="mt-4 px-3 py-1 bg-white/20 rounded-full text-xs text-white/90 font-medium">Online</div>
               </div>
-              <h3 className="text-xl font-bold text-white mb-1">{nomeUsuario || "Usuário"}</h3>
-              <p className="text-white/80 text-sm">{emailUsuario}</p>
-              <div className="mt-4 px-3 py-1 bg-white/20 rounded-full text-xs text-white/90 font-medium">Online</div>
             </div>
           </div>
-        </div>
-
-        {/* Navigation menu */}
-        <nav className="flex-1 p-6">
-          <div className="space-y-2">
+          {/* Navigation menu */}
+          <nav className="flex-1 p-6">
+            <div className="space-y-2">
             <Link
               to="/dashboard"
               onClick={() => setSidebarOpen(false)}
@@ -240,6 +239,7 @@ const Dashboard = () => {
             </svg>
             <span className="font-semibold">Sair da Conta</span>
           </Link>
+        </div>
         </div>
       </aside>
 
