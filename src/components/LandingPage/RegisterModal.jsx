@@ -111,11 +111,11 @@ const RegisterModal = ({ isOpen, onClose, onSwitchToLogin }) => {
   }
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden">
-        <div className="grid md:grid-cols-2 min-h-[600px]">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl sm:max-w-3xl md:max-w-4xl max-h-[95vh] overflow-hidden flex flex-col">
+  <div className="grid grid-cols-1 md:grid-cols-2 min-h-[500px] h-full">
           {/* Register Form */}
-          <div className="p-6 lg:p-8 overflow-y-auto">
+          <div className="p-4 sm:p-6 md:p-8 overflow-y-auto max-h-[70vh] md:max-h-none">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold text-gray-900">Criar Conta</h2>
               <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
@@ -282,8 +282,8 @@ const RegisterModal = ({ isOpen, onClose, onSwitchToLogin }) => {
             </div>
           </div>
 
-          {/* Info Panel */}
-          <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-8 lg:p-12 text-white flex flex-col justify-center">
+          {/* Info Panel: escondido em telas menores */}
+          <div className="hidden md:flex bg-gradient-to-br from-blue-500 to-blue-600 p-4 sm:p-8 md:p-12 text-white flex-col justify-center min-h-[300px]">
             <div className="text-center">
               <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6">
                 <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
