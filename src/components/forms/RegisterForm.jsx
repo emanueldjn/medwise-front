@@ -11,6 +11,10 @@ const RegisterForm = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    ndni: "",
+    data_nascimento: "",
+    sexo: "",
+    aceita_termos: false,
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
@@ -30,8 +34,12 @@ const RegisterForm = () => {
     e.preventDefault()
     setError("")
 
-    if (!formData.nome_completo || !formData.email || !formData.password || !formData.confirmPassword) {
+    if (!formData.nome_completo || !formData.email || !formData.password || !formData.confirmPassword || !formData.ndni || !formData.data_nascimento || !formData.sexo) {
       setError("Preencha todos os campos.")
+      return
+    }
+    if (!formData.aceita_termos) {
+      setError("Você precisa aceitar os termos de uso.")
       return
     }
 
@@ -56,11 +64,19 @@ const RegisterForm = () => {
         nome_completo: formData.nome_completo,
         email: formData.email,
         password: formData.password,
+        ndni: formData.ndni,
+        data_nascimento: formData.data_nascimento,
+        sexo: formData.sexo,
+        aceita_termos: formData.aceita_termos,
       })
 
-      if (response.data) {
-        toast.success("Conta criada com sucesso!")
-        navigate("/login")
+      if (response.data?.user) {
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+        toast.success("Conta criada com sucesso!");
+        navigate("/configuracoes");
+      } else if (response.data?.message) {
+        toast.success(response.data.message);
+        navigate("/login");
       }
     } catch (err) {
       console.error("Erro no registro:", err)
@@ -120,6 +136,50 @@ const RegisterForm = () => {
                   autoComplete="name"
                 />
               </div>
+              <div>
+                <label htmlFor="ndni" className="block text-sm font-medium text-card-foreground mb-2">
+                  DNI
+                </label>
+                <input
+                  type="text"
+                  id="ndni"
+                  name="ndni"
+                  className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-colors"
+                  placeholder="Seu DNI"
+                  value={formData.ndni}
+                  onChange={handleChange}
+                />
+              </div>
+              <div>
+                <label htmlFor="data_nascimento" className="block text-sm font-medium text-card-foreground mb-2">
+                  Data de Nascimento
+                </label>
+                <input
+                  type="date"
+                  id="data_nascimento"
+                  name="data_nascimento"
+                  className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-colors"
+                  value={formData.data_nascimento}
+                  onChange={handleChange}
+                />
+              </div>
+              <div>
+                <label htmlFor="sexo" className="block text-sm font-medium text-card-foreground mb-2">
+                  Sexo
+                </label>
+                <select
+                  id="sexo"
+                  name="sexo"
+                  className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-colors"
+                  value={formData.sexo}
+                  onChange={handleChange}
+                >
+                  <option value="">Selecione</option>
+                  <option value="masculino">Masculino</option>
+                  <option value="feminino">Feminino</option>
+                  <option value="outro">Outro</option>
+                </select>
+              </div>
 
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-card-foreground mb-2">
@@ -170,6 +230,19 @@ const RegisterForm = () => {
               </div>
             </div>
 
+            <div className="flex items-center mb-4">
+              <input
+                type="checkbox"
+                id="aceita_termos"
+                name="aceita_termos"
+                checked={formData.aceita_termos}
+                onChange={e => setFormData({ ...formData, aceita_termos: e.target.checked })}
+                className="mr-2"
+              />
+              <label htmlFor="aceita_termos" className="text-sm text-card-foreground">
+                Eu aceito os <a href="#" className="text-primary underline">termos de uso</a>
+              </label>
+            </div>
             <button
               type="submit"
               className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 px-4 rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"

@@ -1,13 +1,83 @@
 "use client"
 
 import { useState } from "react"
+import { useEffect } from "react"
 import { Link } from "react-router-dom"
+import { toast } from "react-toastify"
+import axios from "axios"
 
 const Configuracoes = () => {
-  const [notificacoes, setNotificacoes] = useState(true)
-  const [tema, setTema] = useState("claro")
-  const [idioma, setIdioma] = useState("pt-BR")
+  const [notificacoes, setNotificacoes] = useState(true);
+  const [tema, setTema] = useState("claro");
+  const [idioma, setIdioma] = useState("pt-BR");
+  const [nomeCompleto, setNomeCompleto] = useState("");
+  const [email, setEmail] = useState("");
+  const [biografia, setBiografia] = useState("");
+  const [ndni, setNDni] = useState("");
+  const [dataNascimento, setDataNascimento] = useState("");
+  const [sexo, setSexo] = useState("");
+  const [foto, setFoto] = useState(null);
+  const [fotoPreview, setFotoPreview] = useState(null);
 
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+      setNomeCompleto(user.nome_completo || "");
+      setEmail(user.email || "");
+      setNDni(user.ndni || "");
+      setDataNascimento(user.data_nascimento || "");
+      setSexo(user.sexo || "");
+    }
+  }, []);
+
+  const uploadFoto = async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const res = await axios.post('/api/upload', formData);
+    return res.data.url;
+  };
+
+  const handleFotoChange = (e) => {
+    const file = e.target.files[0];
+    setFoto(file);
+    setFotoPreview(file ? URL.createObjectURL(file) : null);
+  };
+
+
+  const handleSalvar = async (e) => {
+    e.preventDefault();
+
+    let fotoUrl = '';
+    if (foto) {
+      fotoUrl = await uploadFoto(foto);
+    }
+
+    // Recupera o id do usuário do localStorage
+    const user = JSON.parse(localStorage.getItem('user'));
+    const userId = user?.id;
+
+    if (!userId) {
+      toast.error('ID do usuário não encontrado. Faça login novamente.');
+      return;
+    }
+
+    const perfil = {
+      nome_completo: nomeCompleto,
+      email,
+      biografia,
+      ndni,
+      data_nascimento: dataNascimento,
+      sexo,
+      foto_perfil: fotoUrl,
+    };
+
+    try {
+      await axios.put(`https://medwise-back.onrender.com/api/user/${userId}`, perfil);
+      toast.success('Dados salvos com sucesso!');
+    } catch {
+      toast.error('Erro ao salvar dados.');
+    }
+  };
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -52,6 +122,8 @@ const Configuracoes = () => {
                   <label className="block text-sm font-medium text-card-foreground mb-2">Nome Completo</label>
                   <input
                     type="text"
+                    value={nomeCompleto}
+                    onChange={e => setNomeCompleto(e.target.value)}
                     className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-colors"
                     placeholder="Seu nome completo"
                   />
@@ -60,22 +132,81 @@ const Configuracoes = () => {
                   <label className="block text-sm font-medium text-card-foreground mb-2">Email</label>
                   <input
                     type="email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
                     className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-colors"
                     placeholder="seu@email.com"
                   />
                 </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                <div>
+                  <label className="block text-sm font-medium text-card-foreground mb-2">DNI</label>
+                  <input
+                    type="text"
+                    value={ndni}
+                    onChange={e => setNDni(e.target.value)}
+                    className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-colors"
+                    placeholder="Seu DNI"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-card-foreground mb-2">Data de Nascimento</label>
+                  <input
+                    type="date"
+                    value={dataNascimento}
+                    onChange={e => setDataNascimento(e.target.value)}
+                    className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-colors"
+                  />
+                </div>
+              </div>
+              <div className="mt-6">
+                <label className="block text-sm font-medium text-card-foreground mb-2">Sexo</label>
+                <select
+                  value={sexo}
+                  onChange={e => setSexo(e.target.value)}
+                  className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-colors"
+                >
+                  <option value="">Selecione</option>
+                  <option value="masculino">Masculino</option>
+                  <option value="feminino">Feminino</option>
+                  <option value="outro">Outro</option>
+                </select>
+              </div>
+              {/* Campo de upload de foto de perfil */}
+              <div className="mt-6 flex items-center gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-card-foreground mb-2">Foto de Perfil</label>
+                  <label className="inline-block cursor-pointer bg-primary text-primary-foreground font-medium py-2 px-4 rounded-lg transition-colors duration-200 hover:bg-primary/90">
+                    Selecionar Foto
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFotoChange}
+                      className="hidden"
+                    />
+                  </label>
+                  {foto && (
+                    <span className="block text-xs text-muted-foreground mt-2">{foto.name}</span>
+                  )}
+                </div>
+                {fotoPreview && (
+                  <img src={fotoPreview} alt="Prévia da foto" className="w-20 h-20 rounded-full object-cover border border-border" />
+                )}
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-card-foreground mb-2">Biografia</label>
                 <textarea
                   rows={4}
+                  value={biografia}
+                  onChange={e => setBiografia(e.target.value)}
                   className="w-full px-4 py-3 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-colors resize-none"
                   placeholder="Conte um pouco sobre você..."
                 ></textarea>
               </div>
 
-              <button className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 px-6 rounded-lg transition-colors duration-200">
+              <button onClick={handleSalvar} className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 px-6 rounded-lg transition-colors duration-200">
                 Salvar Alterações
               </button>
             </div>
@@ -127,14 +258,12 @@ const Configuracoes = () => {
                 </div>
                 <button
                   onClick={() => setNotificacoes(!notificacoes)}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                    notificacoes ? "bg-primary" : "bg-border"
-                  }`}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${notificacoes ? "bg-primary" : "bg-border"
+                    }`}
                 >
                   <span
-                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                      notificacoes ? "translate-x-6" : "translate-x-1"
-                    }`}
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${notificacoes ? "translate-x-6" : "translate-x-1"
+                      }`}
                   />
                 </button>
               </div>
@@ -160,17 +289,15 @@ const Configuracoes = () => {
                 <div className="grid grid-cols-2 gap-3">
                   <button
                     onClick={() => setTema("claro")}
-                    className={`p-3 rounded-lg border-2 transition-colors ${
-                      tema === "claro" ? "border-primary bg-primary/10" : "border-border bg-background"
-                    }`}
+                    className={`p-3 rounded-lg border-2 transition-colors ${tema === "claro" ? "border-primary bg-primary/10" : "border-border bg-background"
+                      }`}
                   >
                     <div className="text-sm font-medium">Claro</div>
                   </button>
                   <button
                     onClick={() => setTema("escuro")}
-                    className={`p-3 rounded-lg border-2 transition-colors ${
-                      tema === "escuro" ? "border-primary bg-primary/10" : "border-border bg-background"
-                    }`}
+                    className={`p-3 rounded-lg border-2 transition-colors ${tema === "escuro" ? "border-primary bg-primary/10" : "border-border bg-background"
+                      }`}
                   >
                     <div className="text-sm font-medium">Escuro</div>
                   </button>
