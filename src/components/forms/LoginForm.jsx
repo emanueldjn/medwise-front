@@ -46,7 +46,8 @@ const LoginForm = () => {
             }
         } catch (err) {
             console.error('Erro no login:', err);
-            const msg = err.response?.data?.error || 'Erro ao conectar ao servidor. Tente novamente.'
+            // Se o backend retornar erro HTTP, mostrar a mensagem do backend
+            const msg = err.response?.data?.error || err.message || 'Erro ao conectar ao servidor. Tente novamente.'
             setError(msg)
             toast.error(msg)
         } finally {
