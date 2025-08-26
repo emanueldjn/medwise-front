@@ -16,8 +16,7 @@ const Configuracoes = () => {
   const [ndni, setNDni] = useState("");
   const [dataNascimento, setDataNascimento] = useState("");
   const [sexo, setSexo] = useState("");
-  const [foto, setFoto] = useState(null);
-  const [fotoPreview, setFotoPreview] = useState(null);
+  // ...removido upload de foto...
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -30,27 +29,11 @@ const Configuracoes = () => {
     }
   }, []);
 
-  const uploadFoto = async (file) => {
-    const formData = new FormData();
-    formData.append('file', file);
-    const res = await axios.post('https://medwise-back.onrender.com/api/upload', formData);
-    return res.data.url;
-  };
 
-  const handleFotoChange = (e) => {
-    const file = e.target.files[0];
-    setFoto(file);
-    setFotoPreview(file ? URL.createObjectURL(file) : null);
-  };
 
 
   const handleSalvar = async (e) => {
     e.preventDefault();
-
-    let fotoUrl = '';
-    if (foto) {
-      fotoUrl = await uploadFoto(foto);
-    }
 
     // Recupera o id do usuário do localStorage
     const user = JSON.parse(localStorage.getItem('user'));
@@ -68,7 +51,6 @@ const Configuracoes = () => {
       ndni,
       data_nascimento: dataNascimento,
       sexo,
-      foto_perfil: fotoUrl,
     };
 
     try {
@@ -173,27 +155,7 @@ const Configuracoes = () => {
                   <option value="outro">Outro</option>
                 </select>
               </div>
-              {/* Campo de upload de foto de perfil */}
-              <div className="mt-6 flex items-center gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-card-foreground mb-2">Foto de Perfil</label>
-                  <label className="inline-block cursor-pointer bg-primary text-primary-foreground font-medium py-2 px-4 rounded-lg transition-colors duration-200 hover:bg-primary/90">
-                    Selecionar Foto
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleFotoChange}
-                      className="hidden"
-                    />
-                  </label>
-                  {foto && (
-                    <span className="block text-xs text-muted-foreground mt-2">{foto.name}</span>
-                  )}
-                </div>
-                {fotoPreview && (
-                  <img src={fotoPreview} alt="Prévia da foto" className="w-20 h-20 rounded-full object-cover border border-border" />
-                )}
-              </div>
+              {/* upload de foto removido */}
 
               <div>
                 <label className="block text-sm font-medium text-card-foreground mb-2">Biografia</label>
