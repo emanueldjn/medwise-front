@@ -4,9 +4,9 @@ import { ArrowRight, BookOpen, Users, Award } from "lucide-react"
 
 const Hero = ({ onLoginClick }) => {
   return (
-    <section id="inicio" className="pt-20 pb-16 bg-gradient-to-br from-blue-50 to-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+  <section id="inicio" className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-white">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-1 items-center justify-center" style={{ minHeight: '100vh' }}>
+  <div className="grid lg:grid-cols-2 gap-12 items-center w-full">
           {/* Content */}
           <div className="text-center lg:text-left">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 text-balance">

@@ -61,7 +61,7 @@ const Plans = ({ onLoginClick }) => {
           {plans.map((plan, index) => (
             <div
               key={index}
-              className={`relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow ${
+              className={`relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow flex flex-col h-full justify-between ${
                 plan.popular ? "ring-2 ring-blue-500 scale-105" : ""
               }`}
             >
@@ -74,34 +74,38 @@ const Plans = ({ onLoginClick }) => {
                 </div>
               )}
 
-              <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">{plan.name}</h3>
-                <p className="text-gray-600 mb-4">{plan.description}</p>
-                <div className="flex items-baseline justify-center">
-                  <span className="text-4xl font-bold text-gray-900">{plan.price}</span>
-                  <span className="text-gray-600 ml-1">{plan.period}</span>
+              <div>
+                <div className="text-center mb-8">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{plan.name}</h3>
+                  <p className="text-gray-600 mb-4">{plan.description}</p>
+                  <div className="flex items-baseline justify-center">
+                    <span className="text-4xl font-bold text-gray-900">{plan.price}</span>
+                    <span className="text-gray-600 ml-1">{plan.period}</span>
+                  </div>
                 </div>
+
+                <ul className="space-y-4 mb-8">
+                  {plan.features.map((feature, featureIndex) => (
+                    <li key={featureIndex} className="flex items-center gap-3">
+                      <Check className="text-green-500 flex-shrink-0" size={20} />
+                      <span className="text-gray-700">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
 
-              <ul className="space-y-4 mb-8">
-                {plan.features.map((feature, featureIndex) => (
-                  <li key={featureIndex} className="flex items-center gap-3">
-                    <Check className="text-green-500 flex-shrink-0" size={20} />
-                    <span className="text-gray-700">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <button
-                onClick={onLoginClick}
-                className={`w-full py-3 px-6 rounded-lg font-semibold transition-colors ${
-                  plan.popular
-                    ? "bg-blue-500 text-white hover:bg-blue-600"
-                    : "bg-gray-100 text-gray-900 hover:bg-gray-200"
-                }`}
-              >
-                Começar Agora
-              </button>
+              <div className="mt-auto">
+                <button
+                  onClick={onLoginClick}
+                  className={`w-full py-3 px-6 rounded-lg font-semibold transition-colors ${
+                    plan.popular
+                      ? "bg-blue-500 text-white hover:bg-blue-600"
+                      : "bg-gray-100 text-gray-900 hover:bg-gray-200"
+                  }`}
+                >
+                  Começar Agora
+                </button>
+              </div>
             </div>
           ))}
         </div>
