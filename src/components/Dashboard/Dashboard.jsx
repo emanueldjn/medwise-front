@@ -25,7 +25,7 @@ const Dashboard = () => {
   }
 
   return (
-  <div className="min-h-screen flex bg-background">
+  <div className="flex bg-background" style={{ minHeight: '100vh', height: '100vh' }}>
       {sidebarOpen && (
         <div className="fixed inset-0 bg-black/50 z-40 md:hidden" onClick={() => setSidebarOpen(false)} />
       )}
@@ -33,9 +33,9 @@ const Dashboard = () => {
       <aside
         className={`fixed md:relative w-80 bg-sidebar border-r border-sidebar-border flex flex-col shadow-2xl z-50 transition-transform duration-300 ${
           sidebarOpen ? "mobile-sidebar-visible" : "mobile-sidebar-hidden md:translate-x-0"
-        }`} style={{ height: '100vh' }}
+        }`} style={{ height: '100vh', minHeight: '100vh' }}
       >
-  <div className="flex flex-col h-full overflow-y-auto">
+  <div className="flex flex-col h-full overflow-y-auto flex-1">
           {/* Header with modern gradient */}
           <div className="bg-gradient-to-br from-primary via-primary to-secondary p-8 relative overflow-hidden shrink-0">
             <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
@@ -243,7 +243,7 @@ const Dashboard = () => {
         </div>
       </aside>
 
-      <main className="flex-1 p-4 md:p-8 overflow-auto">
+  <main className="flex-1 p-4 md:p-8 overflow-auto flex flex-col" style={{ minHeight: '100vh', height: '100vh' }}>
         <div className="md:hidden mb-6">
           <button onClick={() => setSidebarOpen(true)} className="p-2 bg-primary text-white rounded-lg shadow-lg">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
