@@ -39,8 +39,10 @@ const LoginForm = () => {
                 toast.success('Login realizado com sucesso!')
                 navigate('/dashboard')
             } else {
-                setError('Resposta inválida do servidor.')
-                toast.error('Resposta inválida do servidor.')
+                console.error('Resposta do servidor:', response.data)
+                const msg = response.data?.error || 'Resposta inválida do servidor.'
+                setError(msg)
+                toast.error(msg)
             }
         } catch (err) {
             console.error('Erro no login:', err);
