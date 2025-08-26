@@ -6,7 +6,7 @@ import { toast } from 'react-toastify'
 const RegisterForm = () => {
     const [nome_completo, setNomeCompleto] = useState('')
     const [email, setEmail] = useState('')
-    const [nDni, setNDni] = useState('')
+    const [ndni, setNdni] = useState('')
     const [password, setPassword] = useState('')
     const [data_nascimento, setDataNascimento] = useState('')
     const [sexo, setSexo] = useState('')
@@ -21,7 +21,7 @@ const RegisterForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         setError('')
-        if (!nome_completo || !email || !nDni || !password || !data_nascimento || !sexo || !aceita_termos) {
+        if (!nome_completo || !email || !ndni || !password || !data_nascimento || !sexo || !aceita_termos) {
             setError('Preencha todos os campos e aceite os termos.')
             return
         }
@@ -37,7 +37,7 @@ const RegisterForm = () => {
         try {
             await axios.post(
                 'https://medwise-back.onrender.com/api/register',
-                { nome_completo, email, password, nDni, data_nascimento, sexo, aceita_termos }
+                { nome_completo, email, password, ndni, data_nascimento, sexo, aceita_termos }
             )
             toast.success('Registro realizado com sucesso!')
             navigate('/login')
@@ -93,14 +93,14 @@ const RegisterForm = () => {
                     />
                 </div>
                 <div className="mb-4">
-                    <label htmlFor="nDni" className="block text-gray-700 mb-2">Número de DNI</label>
+                    <label htmlFor="ndni" className="block text-gray-700 mb-2">Número de DNI</label>
                     <input
                         type="text"
-                        id="nDni"
+                        id="ndni"
                         className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-500"
                         placeholder="Digite seu DNI"
-                        value={nDni}
-                        onChange={e => setNDni(e.target.value)}
+                        value={ndni}
+                        onChange={e => setNdni(e.target.value)}
                     />
                 </div>
                 <div className="mb-4">
