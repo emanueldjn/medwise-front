@@ -43,6 +43,7 @@ const LoginForm = () => {
                 toast.error('Resposta inválida do servidor.')
             }
         } catch (err) {
+            console.error('Erro no login:', err);
             const msg = err.response?.data?.error || 'Erro ao conectar ao servidor. Tente novamente.'
             setError(msg)
             toast.error(msg)
