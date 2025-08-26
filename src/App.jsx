@@ -1,12 +1,11 @@
-import React from 'react'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import LoginForm from './components/forms/LoginForm'
-import RegisterForm from './components/forms/RegisterForm'
-import Dashboard from './components/Dashboard/Dashboard'
-import MeusEstudos from './pages/MeusEstudos'
-import Configuracoes from './pages/Configuracoes'
-import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import LoginForm from "./components/forms/LoginForm"
+import RegisterForm from "./components/forms/RegisterForm"
+import Dashboard from "./components/Dashboard/Dashboard"
+import MeusEstudos from "./pages/MeusEstudos"
+import Configuracoes from "./pages/Configuracoes"
+import { ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 const App = () => {
   return (
@@ -19,7 +18,16 @@ const App = () => {
         <Route path="/meus-estudos" element={<MeusEstudos />} />
         <Route path="/configuracoes" element={<Configuracoes />} />
       </Routes>
-      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick pauseOnFocusLoss draggable pauseOnHover />
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </BrowserRouter>
   )
 }
