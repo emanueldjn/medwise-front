@@ -35,7 +35,11 @@ const LoginForm = () => {
                 { email, password }
             )
             if (response.data && response.data.token) {
-                localStorage.setItem('token', response.data.token)
+                localStorage.setItem('user', JSON.stringify({
+                    nome_completo: response.data.nome_completo,
+                    token: response.data.token,
+                    email: email
+                }))
                 toast.success('Login realizado com sucesso!')
                 navigate('/dashboard')
             } else {

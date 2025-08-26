@@ -6,6 +6,15 @@ import { Link } from 'react-router-dom'
 Chart.register(CategoryScale, LinearScale, BarElement, ArcElement, Tooltip, Legend)
 
 const Dashboard = () => {
+    // Tenta recuperar o nome do usuário do localStorage (ajuste conforme o backend)
+    let nomeUsuario = '';
+    try {
+        const user = JSON.parse(localStorage.getItem('user'));
+        nomeUsuario = user?.nome_completo || user?.nome || '';
+    } catch {
+        // Se não houver usuário no localStorage, nomeUsuario permanece vazio
+    }
+
     return (
         <div className="flex">
             <aside className="w-64 bg-blue-700 text-white flex flex-col py-8 px-4">
@@ -19,6 +28,7 @@ const Dashboard = () => {
             </aside>
             <main className="flex-1 p-10">
                 <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
+                <div className="mb-6 text-xl font-semibold">Bem-vindo{nomeUsuario ? `, ${nomeUsuario}` : ''}!</div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="bg-white p-6 rounded-lg shadow">
                         <h2 className="text-xl font-semibold mb-4">Gráfico de Barras</h2>
