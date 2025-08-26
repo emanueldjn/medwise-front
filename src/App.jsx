@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import LandingPage from "./components/LandingPage/LadingPage"
 import LoginForm from "./components/forms/LoginForm"
 import RegisterForm from "./components/forms/RegisterForm"
 import Dashboard from "./components/Dashboard/Dashboard"
@@ -12,7 +13,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/dashboard" element={<Dashboard />} />
