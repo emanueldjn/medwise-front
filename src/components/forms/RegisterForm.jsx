@@ -77,6 +77,7 @@ const RegisterForm = () => {
                         placeholder="Digite seu email"
                         value={email}
                         onChange={e => setEmail(e.target.value)}
+                        autoComplete="email"
                     />
                 </div>
                 <div className="mb-6">
@@ -88,6 +89,7 @@ const RegisterForm = () => {
                         placeholder="Digite sua senha"
                         value={password}
                         onChange={e => setPassword(e.target.value)}
+                        autoComplete="current-password"
                     />
                 </div>
                 <div className="mb-4">
