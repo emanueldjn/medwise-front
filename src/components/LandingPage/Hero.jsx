@@ -26,7 +26,15 @@ const Hero = ({ onLoginClick }) => {
                 Começar Agora
                 <ArrowRight size={20} />
               </button>
-              <button className="border-2 border-blue-500 text-blue-500 px-8 py-4 rounded-lg hover:bg-blue-50 transition-colors text-lg font-semibold">
+              <button
+                className="border-2 border-blue-500 text-blue-500 px-8 py-4 rounded-lg hover:bg-blue-50 transition-colors text-lg font-semibold"
+                onClick={() => {
+                  const aboutSection = document.getElementById('sobre');
+                  if (aboutSection) {
+                    aboutSection.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+              >
                 Saiba Mais
               </button>
             </div>
